@@ -44,7 +44,6 @@ void match(string filex, int pl, int window, int fileNo)
 		h = (h*d)%q;
 		for(int i=0; i<=pl-1;i++)
 		{
-			//p = (p*d + pat[i])%q;
 			t = (t*d + text[i])%q;
 		}
 		for(int i=0; i< tl-pl; i++)
@@ -54,7 +53,6 @@ void match(string filex, int pl, int window, int fileNo)
 				hashes[i] = t;
 				t = (d*(t - text[i]*h) + text[i+pl])%q;
 				if(t < 0) t = t+q;
-				// cout<<hashes[i]<<" ";
 	        }
 		}
     	int min_pos = -1, j = 0, min;
@@ -63,7 +61,6 @@ void match(string filex, int pl, int window, int fileNo)
     		if(i == 0) 
     		{
 				find_min(&min, &min_pos, hashes, i, window);
-				//cout<<min<<"\n";
 		  		sig[k].push_back(min);
 			}
 			else if(i < (min_pos + window) )
@@ -73,7 +70,6 @@ void match(string filex, int pl, int window, int fileNo)
 		   		{
 					min = hashes[i];
 					min_pos = i;
-					//cout<<min<<"\n";
 					sig[k].push_back(min);
 				}
 			}
@@ -81,7 +77,6 @@ void match(string filex, int pl, int window, int fileNo)
 			{
 				i -= (window - 1) ;
 				find_min(&min, &min_pos, hashes, i, window);
-				//cout<<min<<"\n";
 				sig[k].push_back(min);
 			}
 		}
@@ -96,6 +91,24 @@ void match(string filex, int pl, int window, int fileNo)
 		for(int j = 0;j<sig[i].size();j++)
 		{
 			cout<<sig[i][j]<<" ";
+			
+			ifstream readFile;
+			string fileName="Hash.txt", append=filex, line, st[101];
+			readFile.open(fileName.c_str() );
+			int lineNo=0;
+			while(getline(readFile, line))
+			{
+				st[lineNo++]=line;
+			}
+			ofstream writeFile;
+			append += ",";
+			append += i+'0';
+			st[sig[i][j]] += " ";
+			st[sig[i][j]] += append;
+			writeFile.open(fileName.c_str() );
+			for(int k=0;k < lineNo;k++)
+				writeFile << st[k] << "\n";
+			
 			count++;
 			if(fileNo==2)
 			{
