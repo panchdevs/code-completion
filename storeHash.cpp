@@ -25,7 +25,7 @@ void find_min(int *min, int *min_pos, int hashes[],int i,int window)
 	}
 }
 
-void match(string filex, int pl, int window, int fileNo)
+void match(string filex, int pl, int window)
 {
     int tl;
     ifstream fileOne;
@@ -108,38 +108,33 @@ void match(string filex, int pl, int window, int fileNo)
 			writeFile.open(fileName.c_str() );
 			for(int k=0;k < lineNo;k++)
 				writeFile << st[k] << "\n";
-			
-			count++;
-			if(fileNo==2)
-			{
-				if(check[sig[i][j]])
-				{
-					matched += 2;
-					check[sig[i][j]]--;
-				}
-			}
-			else
-			{
-				check[sig[i][j]]++;
-			}
 		}
     	cout<<"\n";
     }
-	cout<<"Total hashes are "<<count<<"\n";
-	overallTotal+=count;
+}
+
+void resetHashFile()
+{
+	ofstream fileOn;
+    string filex="hash.txt";
+    fileOn.open(filex.c_str() );
+	for(int i=0;i<101;i++)
+		fileOn << i<<"\n";
 }
 
 int main()
 {
 
-	string fileName,pat ; int pl,window;
+	string fileName="fileList.txt",pat,line;
+	int pl,window;
 	cout<<"Enter substring length "; cin>>pl;
 	cout<<"Enter window size "; cin>>window;
-	for(int fileNo=1;fileNo<=2;fileNo++)
-	{ 
-		cout<<"Enter file "<<fileNo<<" Name: "; cin>>fileName;
-	  	match(fileName,pl,window,fileNo);
+	resetHashFile();
+	ifstream readFile;
+	readFile.open(fileName.c_str() );
+	while(getline(readFile, line))
+	{
+		match(line,pl,window);
 	}
-	cout<<"Matching Percentage: "<<(float)(matched*100)/overallTotal;
 	return 0;
 }
