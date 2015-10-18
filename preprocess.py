@@ -22,6 +22,7 @@ headers = create('headers_c++.txt')
 
 fw = open('sample_out.cpp','w')
 t = ''
+variables = []
 
 with open(sys.argv[1]) as f:
 	for line in f:
@@ -30,7 +31,7 @@ with open(sys.argv[1]) as f:
 			c = line[i]
 			if c in operators or c in delimiters:
 					fw.write(c)
-					
+
 			elif c.isdigit():
 				fw.write(c)
 
@@ -46,16 +47,18 @@ with open(sys.argv[1]) as f:
 					fw.write('LOOP')
 
 				elif t in keywords:
-					print("keyword written ",t)
+					#print("keyword written ",t)
 					fw.write(t+' ')
 
 				elif th in headers:
-					print("header file written ",th)
+					#print("header file written ",th)
 					fw.write(t)
 
 				else:
-					print("t not written ",t)
-					fw.write('V ')
+					#print("t not written ",t)
+					variables.append(t)
+					x = variables.index(t)
+					fw.write('V'+str(x)+' ')
 
 				t = ''
 				i -= 1
