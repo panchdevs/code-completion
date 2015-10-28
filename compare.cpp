@@ -52,7 +52,7 @@ void compare(string file1, string file2)
 	total += i;
 	cout<<"\nFile: "<<file1<<"\t Matching Percentage: "<<(float)(matched*100)/total;
 }
-int main()
+int main(int argc, char *argv[])
 {
 	string filex="hash.txt",line;
 	ifstream readFile;
@@ -69,7 +69,7 @@ int main()
 	cin>>newFile;
 
 	map <int, vector<int> > sig_of_new_file;
-	sig_of_new_file = creatSignature(newFile);
+	sig_of_new_file = create_signature(newFile);
 
 	vector<string> file_list;
 	createFileList(argv[1], file_list);			//Give Directory name as command line argument
