@@ -5,12 +5,12 @@
 #include <fstream>
 #include <vector>
 #define d 256
-#define q 101
-
+#define q 1001
+#define pl 4 //substring length 
+#define window 4 //window size
 using namespace std;
-int overallTotal,matched,check[101];
-
-void find_min(int *min, int *min_pos, int hashes[],int i,int window)
+int overallTotal,matched;
+void find_min(int *min, int *min_pos, int hashes[],int i)
 {
 	*min = 99999999;
     int j = i;
@@ -25,7 +25,7 @@ void find_min(int *min, int *min_pos, int hashes[],int i,int window)
 	}
 }
 
-void match(string filex, int pl, int window)
+void match(string filex)
 {
     int tl;
     ifstream fileOne;
@@ -60,7 +60,7 @@ void match(string filex, int pl, int window)
     	{
     		if(i == 0) 
     		{
-				find_min(&min, &min_pos, hashes, i, window);
+				find_min(&min, &min_pos, hashes, i);
 		  		sig[k].push_back(min);
 			}
 			else if(i < (min_pos + window) )
@@ -76,7 +76,7 @@ void match(string filex, int pl, int window)
 			else if(i >= (min_pos + window))
 			{
 				i -= (window - 1) ;
-				find_min(&min, &min_pos, hashes, i, window);
+				find_min(&min, &min_pos, hashes, i);
 				sig[k].push_back(min);
 			}
 		}
@@ -93,7 +93,7 @@ void match(string filex, int pl, int window)
 			cout<<sig[i][j]<<" ";
 			
 			ifstream readFile;
-			string fileName="Hash.txt", append=filex, line, st[101];
+			string fileName="Hash.txt", append=filex, line, st[q];
 			readFile.open(fileName.c_str() );
 			int lineNo=0;
 			while(getline(readFile, line))
@@ -116,9 +116,9 @@ void match(string filex, int pl, int window)
 void resetHashFile()
 {
 	ofstream fileOn;
-    string filex="hash.txt";
+    string filex="Hash.txt";
     fileOn.open(filex.c_str() );
-	for(int i=0;i<101;i++)
+	for(int i=0;i<q;i++)
 		fileOn << i<<"\n";
 }
 
@@ -126,15 +126,12 @@ int main()
 {
 
 	string fileName="fileList.txt",pat,line;
-	int pl,window;
-	cout<<"Enter substring length "; cin>>pl;
-	cout<<"Enter window size "; cin>>window;
 	resetHashFile();
 	ifstream readFile;
 	readFile.open(fileName.c_str() );
 	while(getline(readFile, line))
 	{
-		match(line,pl,window);
+		match(line);
 	}
 	return 0;
 }
