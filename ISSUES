@@ -1,6 +1,0 @@
-ISSUES
-
-Value of hash modulus
-
-why take signature using winnowing of every line? shouldn't we take it for a particular number of hash values??
-
