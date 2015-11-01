@@ -20,7 +20,7 @@ operators = create('data/operators_c++.txt')
 delimiters = create('data/delimiters_c++.txt')
 headers = create('data/headers_c++.txt')
 
-fw = open('processed_output.cpp','w')
+fw = open('out3.cpp','w')
 t = ''
 variables = []
 

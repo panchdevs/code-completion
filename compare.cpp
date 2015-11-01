@@ -5,8 +5,8 @@
 #include <fstream>
 #include <vector>
 #include <dirent.h>
-#include "winnow.h"
-
+//#include "winnow.h"
+#define q 101
 using namespace std;
 
 std::map<string, vector<pair<int, string> > > sig;
@@ -30,7 +30,7 @@ void initialiseMap(string line, int hashValue)
 }
 void compare(string file1, string file2)
 {
-	int freq[101]={0};
+	int freq[q]={0};
 	int i=0;
 	while(i<sig[file1].size())
 	{
@@ -50,8 +50,30 @@ void compare(string file1, string file2)
 		i++;
 	}
 	total += i;
-	cout<<"\nFile: "<<file1<<"\t Matching Percentage: "<<(float)(matched*100)/total;
+	cout<<"File: "<<file1<<"\t"<<(float)(matched*100)/total<<"\n";
 }
+
+void createFileList(char *directory, vector<string> &file_list)
+{
+    DIR *dir;
+ 	struct dirent *ent;
+ 	if ((dir = opendir (directory)) != NULL) 
+ 	{
+  		while ((ent = readdir (dir)) != NULL) 
+    	{
+    		file_list.push_back(ent->d_name);
+    		//printf ("%s\n", ent->d_name);
+    	}
+  		closedir (dir);
+	} 
+	else 
+	{
+  		perror ("");
+  		//return EXIT_FAILURE;
+	}
+}
+
+
 int main(int argc, char *argv[])
 {
 	string filex="hash.txt",line;
@@ -68,8 +90,8 @@ int main(int argc, char *argv[])
 	cout<<"Enter the file to be compared: ";
 	cin>>newFile;
 
-	map <int, vector<int> > sig_of_new_file;
-	sig_of_new_file = create_signature(newFile);
+	/*map <int, vector<int> > sig_of_new_file;
+	sig_of_new_file = create_signature(newFile);*/
 
 	vector<string> file_list;
 	createFileList(argv[1], file_list);			//Give Directory name as command line argument
@@ -80,7 +102,7 @@ int main(int argc, char *argv[])
 	{	s = *it;
 		if((s.compare(s1) != 0) && (s.compare(s2) != 0))
 		{	s = (string)argv[1]+"/"+s;
-			cout<<s<<"\n";
+			//cout<<s<<"\n";
 			compare(s,newFile);
 		}
 	}
